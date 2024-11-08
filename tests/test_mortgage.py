@@ -63,3 +63,16 @@ class MortgageTests(TestCase):
         mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
         mortgage.loan_amount = 150000
         self.assertEqual(mortgage.loan_amount, 150000)
+
+    def test_rate_mutator_valid_enum_value(self):
+        """Test setting a valid MortgageRate enum value for rate."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        mortgage.rate = "FIXED_3"
+        self.assertEqual(mortgage.rate, MortgageRate.FIXED_3)
+
+    def test_rate_mutator_invalid_value(self):
+        """Test setting an invalid value for rate raises ValueError."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        with self.assertRaises(ValueError) as context:
+            mortgage.rate = "INVALID_RATE"
+        self.assertEqual(str(context.exception), "Rate provided is invalid.")

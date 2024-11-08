@@ -60,3 +60,16 @@ class Mortgage:
         if value <= 0:
             raise ValueError("Loan Amount must be positive.")
         self.__loan_amount = value
+
+    @property
+    def rate(self):
+        """Accessor for the rate."""
+        return self.__rate
+
+    @rate.setter
+    def rate(self, value):
+        """Mutator for the rate with validation."""
+        try:
+            self.__rate = MortgageRate[value]
+        except KeyError:
+            raise ValueError("Rate provided is invalid.")
