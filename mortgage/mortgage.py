@@ -73,3 +73,16 @@ class Mortgage:
             self.__rate = MortgageRate[value]
         except KeyError:
             raise ValueError("Rate provided is invalid.")
+        
+    @property
+    def frequency(self):
+        """Accessor for the frequency."""
+        return self.__frequency
+
+    @frequency.setter
+    def frequency(self, value):
+        """Mutator for the frequency with validation."""
+        try:
+            self.__frequency = PaymentFrequency[value]
+        except KeyError:
+            raise ValueError("Frequency provided is invalid.")
