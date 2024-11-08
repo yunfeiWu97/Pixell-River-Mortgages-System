@@ -43,3 +43,23 @@ class MortgageTests(TestCase):
         self.assertEqual(mortgage._Mortgage__rate, MortgageRate.FIXED_5)
         self.assertEqual(mortgage._Mortgage__frequency, PaymentFrequency.MONTHLY)
         self.assertEqual(mortgage._Mortgage__amortization, 25)
+
+    def test_loan_amount_mutator_negative_value(self):
+        """Test setting a negative value for loan amount raises ValueError."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        with self.assertRaises(ValueError) as context:
+            mortgage.loan_amount = -50000
+        self.assertEqual(str(context.exception), "Loan Amount must be positive.")
+
+    def test_loan_amount_mutator_zero_value(self):
+        """Test setting a zero value for loan amount raises ValueError."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        with self.assertRaises(ValueError) as context:
+            mortgage.loan_amount = 0
+        self.assertEqual(str(context.exception), "Loan Amount must be positive.")
+
+    def test_loan_amount_mutator_positive_value(self):
+        """Test setting a positive value for loan amount works correctly."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        mortgage.loan_amount = 150000
+        self.assertEqual(mortgage.loan_amount, 150000)
