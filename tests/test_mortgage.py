@@ -89,3 +89,16 @@ class MortgageTests(TestCase):
         with self.assertRaises(ValueError) as context:
             mortgage.frequency = "INVALID_FREQUENCY"
         self.assertEqual(str(context.exception), "Frequency provided is invalid.")
+
+    def test_amortization_mutator_valid_value(self):
+        """Test setting a valid amortization value."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        mortgage.amortization = 20
+        self.assertEqual(mortgage.amortization, 20)
+
+    def test_amortization_mutator_invalid_value(self):
+        """Test setting an invalid amortization value raises ValueError."""
+        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        with self.assertRaises(ValueError) as context:
+            mortgage.amortization = 12
+        self.assertEqual(str(context.exception), "Amortization provided is invalid.")
