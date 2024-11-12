@@ -18,83 +18,173 @@ class Mortgage:
         Initialize a new mortgage with the provided parameters.
 
         Args:
-        Loan_amount (float): The amount of the mortgage loan.
-        Rate (str): The annual interest rate as a string (e.g., "FIXED_5").
-        Frequency (str): The payment frequency as a string (e.g., "MONTHLY").
-        Amortization (int): The number of years for the mortgage loan repayment.
+        loan_amount (float): The amount of the mortgage loan.
+        rate (str): The annual interest rate as a string (e.g., "FIXED_5").
+        frequency (str): The payment frequency as a string (e.g., "MONTHLY").
+        amortization (int): The number of years for the mortgage loan repayment.
 
         Raises:
         ValueError: Raise when any of the provided values are invalid.
         """
 
-        # Loan Amount Validation
+        # Validate Loan Amount
         if loan_amount <= 0:
             raise ValueError("Loan Amount must be positive.")
         self.__loan_amount = loan_amount
 
-        # Rate Validation
+        # Validate Rate
         try:
             self.__rate = MortgageRate[rate]
-        except Exception as e:
+        except KeyError:
             raise ValueError("Rate provided is invalid.")
 
-        # Frequency Validation
+        # Validate Frequency
         try:
             self.__frequency = PaymentFrequency[frequency]
-        except Exception as e:
+        except KeyError:
             raise ValueError("Frequency provided is invalid.")
 
-        # Amortization Validation
+        # Validate Amortization
         if amortization not in VALID_AMORTIZATION:
             raise ValueError("Amortization provided is invalid.")
         self.__amortization = amortization
-   
+    
+
+
+
+
+    # Accessor and Mutator for Loan Amount
     @property
     def loan_amount(self):
-        """Accessor for the loan amount."""
+        """Returns the loan amount."""
         return self.__loan_amount
 
     @loan_amount.setter
-    def loan_amount(self, value):
-        """Mutator for the loan amount with validation."""
+    def loan_amount(self, value: float):
+        """
+        Sets the loan amount with validation.
+
+        Args:
+            value (float): The new loan amount.
+        
+        Raises:
+            ValueError: If the new loan amount is <= 0.
+        """
         if value <= 0:
             raise ValueError("Loan Amount must be positive.")
         self.__loan_amount = value
 
+
+
+
+
+
+
+
+
+
+
     @property
     def rate(self):
-        """Accessor for the rate."""
+        """
+        Get the mortgage rate.
+        """
         return self.__rate
 
     @rate.setter
-    def rate(self, value):
-        """Mutator for the rate with validation."""
+    def rate(self, value: str):
+        """
+        Set the mortgage rate, converting it to a MortgageRate enum.
+
+        Arg:
+            value (str): The new rate value.
+
+        Raises:
+            ValueError: If the provided rate is invalid.
+        """
         try:
-            self.__rate = MortgageRate[value]
+            self.__rate = MortgageRate[value]  # Ensure value is stored as MortgageRate enum
         except KeyError:
             raise ValueError("Rate provided is invalid.")
         
+
+
+
+
+
+
+
+
     @property
     def frequency(self):
-        """Accessor for the frequency."""
+        """
+        Get the payment frequency.
+        """
         return self.__frequency
 
     @frequency.setter
-    def frequency(self, value):
-        """Mutator for the frequency with validation."""
+    def frequency(self, value: str):
+        """
+        Set the payment frequency, converting it to a PaymentFrequency enum.
+
+        Arg:
+            value (str): The new frequency value.
+
+        Raises:
+            ValueError: If the provided frequency is invalid.
+        """
         try:
-            self.__frequency = PaymentFrequency[value]
+            self.__frequency = PaymentFrequency[value]  # Convert string to PaymentFrequency enum
         except KeyError:
             raise ValueError("Frequency provided is invalid.")
         
+
+
+
+
+
+
+
+    # Accessor and Mutator for Amortization
     @property
     def amortization(self):
-        """Accessor for the amortization."""
+        """
+        Get the amortization period in years.
+        """        
         return self.__amortization
 
     @amortization.setter
-    def amortization(self, value):
-        """Mutator for the amortization with validation."""
+    def amortization(self, value: int):
+        """
+        Sets the amortization period with validation.
+
+        Args:
+            value (int): The new amortization period.
+        
+        Raises:
+            ValueError: If the new amortization period is invalid.
+        """
         if value not in VALID_AMORTIZATION:
             raise ValueError("Amortization provided is invalid.")
         self.__amortization = value
+
+
+
+
+
+
+
+
+
+    def calculate_payment(self) -> float:
+        """
+        Calculates the mortgage payment based on the loan amount, 
+        interest rate, frequency, and amortization period.
+        """
+        P = self.__loan_amount
+        rate = self.__rate.value
+        n = self.__amortization * self.__frequency.value
+        i = rate / self.__frequency.value
+        
+        payment = P * (i * (1 + i) ** n) / ((1 + i) ** n - 1)
+        return round(payment, 2)

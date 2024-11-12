@@ -10,95 +10,287 @@ from mortgage.mortgage import Mortgage
 from mortgage.pixell_lookup import MortgageRate, PaymentFrequency
 
 class MortgageTests(TestCase):
-    """Unit tests for the Mortgage class."""
+    """
+    Test cases for the Mortgage class, including validation of loan 
+    amount, rate, frequency, amortization, and accessor and mutator functions.
+    """
 
-    def test_invalid_amount_raises_value_error(self):
-        """Test that __init__ raises ValueError for an invalid loan amount."""
+    def test_invalid_loan_amount(self):
+        """
+        Test that initializing the Mortgage with an invalid loan amount 
+        (negative value) raises a ValueError.
+        """
+        # Arrange
+        negative_value = -1000
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            Mortgage(0, "FIXED_5", "MONTHLY", 25)
-        self.assertEqual(str(context.exception), "Loan Amount must be positive.")
+            mortgage = Mortgage(negative_value, 'FIXED_5', 'MONTHLY', 20)
 
-    def test_invalid_rate_raises_value_error(self):
-        """Test that __init__ raises ValueError for an invalid rate."""
+        # Assert
+        expected = "Loan Amount must be positive."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+    def test_invalid_rate(self):
+        """
+        Test that initializing the Mortgage with an invalid rate 
+        (not in MortgageRate enum) raises a ValueError.
+        """
+        # Arrange
+        invalid_rate = 'FIXED_6'
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            Mortgage(100000, "INVALID_RATE", "MONTHLY", 25)
-        self.assertEqual(str(context.exception), "Rate provided is invalid.")
+            mortgage = Mortgage(100000, invalid_rate, 'MONTHLY', 20)
 
-    def test_invalid_frequency_raises_value_error(self):
-        """Test that __init__ raises ValueError for an invalid frequency."""
+        # Assert
+        expected = "Rate provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+    def test_invalid_frequency(self):
+        """
+        Test that initializing the Mortgage with an invalid frequency 
+        (not in PaymentFrequency enum) raises a ValueError.
+        """
+        # Arrange
+        invalid_frequency = 'QUARTERLY'
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            Mortgage(100000, "FIXED_5", "INVALID_FREQUENCY", 25)
-        self.assertEqual(str(context.exception), "Frequency provided is invalid.")
+            mortgage = Mortgage(100000, 'FIXED_5', invalid_frequency, 20)
 
-    def test_invalid_amortization_raises_value_error(self):
-        """Test that __init__ raises ValueError for an invalid amortization."""
+        # Assert
+        expected = "Frequency provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+    def test_invalid_amortization(self):
+        """
+        Test that initializing the Mortgage with an invalid amortization 
+        period (not in VALID_AMORTIZATION list) raises a ValueError.
+        """
+        # Arrange
+        invalid_amortization = 40
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            Mortgage(100000, "FIXED_5", "MONTHLY", 35)
-        self.assertEqual(str(context.exception), "Amortization provided is invalid.")
+            mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', invalid_amortization)
 
-    def test_valid_inputs_set_attributes_correctly(self):
-        """Test that __init__ sets attributes correctly for valid inputs."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
-        self.assertEqual(mortgage._Mortgage__loan_amount, 100000)
-        self.assertEqual(mortgage._Mortgage__rate, MortgageRate.FIXED_5)
-        self.assertEqual(mortgage._Mortgage__frequency, PaymentFrequency.MONTHLY)
-        self.assertEqual(mortgage._Mortgage__amortization, 25)
+        # Assert
+        expected = "Amortization provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
 
-    def test_loan_amount_mutator_negative_value(self):
-        """Test setting a negative value for loan amount raises ValueError."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+    def test_valid_inputs(self):
+        """
+        Test that initializing the Mortgage with valid inputs correctly 
+        sets loan amount, rate, frequency, and amortization attributes.
+        """
+        # Arrange
+        loan_amount = 100000
+        rate = 'FIXED_5'
+        frequency = 'MONTHLY'
+        amortization = 20
+
+        # Act
+        mortgage = Mortgage(loan_amount, rate, frequency, amortization)
+
+        # Assert
+        self.assertEqual(mortgage._Mortgage__loan_amount, loan_amount)
+        self.assertEqual(mortgage._Mortgage__rate, MortgageRate['FIXED_5'])
+        self.assertEqual(mortgage._Mortgage__frequency, PaymentFrequency['MONTHLY'])
+        self.assertEqual(mortgage._Mortgage__amortization, amortization)
+
+
+
+
+
+
+
+
+    def test_set_negative_loan_amount(self):
+        """
+        Test the loan_amount mutator: Attempting to set a negative loan 
+        amount should raise a ValueError.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
         with self.assertRaises(ValueError) as context:
             mortgage.loan_amount = -50000
-        self.assertEqual(str(context.exception), "Loan Amount must be positive.")
 
-    def test_loan_amount_mutator_zero_value(self):
-        """Test setting a zero value for loan amount raises ValueError."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        # Assert
+        expected = "Loan Amount must be positive."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+    def test_set_zero_loan_amount(self):
+        """
+        Test the loan_amount mutator: Attempting to set a loan amount of
+        zero should raise a ValueError.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
         with self.assertRaises(ValueError) as context:
             mortgage.loan_amount = 0
-        self.assertEqual(str(context.exception), "Loan Amount must be positive.")
 
-    def test_loan_amount_mutator_positive_value(self):
-        """Test setting a positive value for loan amount works correctly."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+        # Assert
+        expected = "Loan Amount must be positive."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+    def test_set_positive_loan_amount(self):
+        """
+        Test the loan_amount mutator: Setting a positive loan amount 
+        should correctly update the loan amount attribute.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
         mortgage.loan_amount = 150000
+
+        # Assert
         self.assertEqual(mortgage.loan_amount, 150000)
 
-    def test_rate_mutator_valid_enum_value(self):
-        """Test setting a valid MortgageRate enum value for rate."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
-        mortgage.rate = "FIXED_3"
-        self.assertEqual(mortgage.rate, MortgageRate.FIXED_3)
 
-    def test_rate_mutator_invalid_value(self):
-        """Test setting an invalid value for rate raises ValueError."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+
+
+
+
+
+
+    def test_modify_rate_to_valid(self):
+        """
+        Test the mutator for rate: Modify the rate to a valid value and 
+        verify the result.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
+        mortgage.rate = 'VARIABLE_1'
+
+        # Assert
+        self.assertEqual(mortgage.rate, MortgageRate['VARIABLE_1'])
+    
+    def test_modify_rate_to_invalid(self):
+        """
+        Test the mutator for rate: Modify the rate to an invalid value 
+        and verify that ValueError is raised.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            mortgage.rate = "INVALID_RATE"
-        self.assertEqual(str(context.exception), "Rate provided is invalid.")
+            mortgage.rate = 'INVALID_RATE'
 
-    def test_frequency_mutator_valid_enum_value(self):
-        """Test setting a valid PaymentFrequency enum value for frequency."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
-        mortgage.frequency = "BI_WEEKLY"
-        self.assertEqual(mortgage.frequency, PaymentFrequency.BI_WEEKLY)
+        # Assert
+        expected = "Rate provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
 
-    def test_frequency_mutator_invalid_value(self):
-        """Test setting an invalid value for frequency raises ValueError."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+    
+
+
+
+
+
+    def test_modify_frequency_to_valid(self):
+        """
+        Test the mutator for frequency: Modify the frequency to a valid 
+        value and verify the result.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
+        mortgage.frequency = 'BI_WEEKLY'
+
+        # Assert
+        self.assertEqual(mortgage.frequency, PaymentFrequency['BI_WEEKLY'])
+
+    def test_modify_frequency_to_invalid(self):
+        """
+        Test the mutator for frequency: Modify the frequency to an 
+        invalid value and verify that ValueError is raised.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            mortgage.frequency = "INVALID_FREQUENCY"
-        self.assertEqual(str(context.exception), "Frequency provided is invalid.")
+            mortgage.frequency = 'INVALID_FREQUENCY'
 
-    def test_amortization_mutator_valid_value(self):
-        """Test setting a valid amortization value."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
-        mortgage.amortization = 20
-        self.assertEqual(mortgage.amortization, 20)
+        # Assert
+        expected = "Frequency provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
 
-    def test_amortization_mutator_invalid_value(self):
-        """Test setting an invalid amortization value raises ValueError."""
-        mortgage = Mortgage(100000, "FIXED_5", "MONTHLY", 25)
+
+
+
+
+
+
+
+
+    def test_modify_amortization_to_valid(self):
+        """
+        Test the mutator for amortization: Modify the amortization 
+        period to a valid value and verify the result.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act
+        mortgage.amortization = 25
+
+        # Assert
+        self.assertEqual(mortgage.amortization, 25)
+
+    def test_modify_amortization_to_invalid(self):
+        """
+        Test the mutator for amortization: Modify the amortization 
+        period to an invalid value and verify that ValueError is raised.
+        """
+        # Arrange
+        mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', 20)
+
+        # Act  
         with self.assertRaises(ValueError) as context:
-            mortgage.amortization = 12
-        self.assertEqual(str(context.exception), "Amortization provided is invalid.")
+            mortgage.amortization = 40
+
+        # Assert
+        expected = "Amortization provided is invalid."
+        actual = str(context.exception)
+        self.assertEqual(expected, actual)
+
+
+
+
+
+    
+
+    
+
+    def test_calculate_payment(self):
+        """
+        Test cases for the calculate_payment method.
+        """
+        # Arrange
+        mortgage = Mortgage(682912.43, 'FIXED_1', 'MONTHLY', 10)
+
+        # Act
+        result = mortgage.calculate_payment()
+
+        # Assert
+        self.assertAlmostEqual(result, 7578.30, places=2)
+
+
