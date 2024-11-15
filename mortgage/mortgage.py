@@ -188,3 +188,36 @@ class Mortgage:
         
         payment = P * (i * (1 + i) ** n) / ((1 + i) ** n - 1)
         return round(payment, 2)
+    
+ 
+
+
+
+
+    def __str__(self):
+        """
+        Return a string representation of the mortgage instance.
+        """
+        payment = self.calculate_payment()
+        return (f"Mortgage Amount: ${self.__loan_amount:,.2f}\n"
+                f"Rate: {self.__rate.value * 100}%\n"
+                f"Amortization: {self.__amortization}\n"
+                f"Frequency: {self.__frequency.name.title()} -- "
+                f"Calculated Payment: ${payment:,.2f}")
+    
+    
+
+
+
+
+
+
+    # def __repr__(self):
+    #     return (
+    #         f"Mortgage(loan_amount={self.__loan_amount:.2f}, "
+    #         f"rate={self.__rate.value}, "
+    #         f"amortization={self.__amortization}, "
+    #         f"frequency='{self.__frequency.value}')"
+    #     )
+
+

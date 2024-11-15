@@ -4,7 +4,7 @@ Author: Yunfei Wu
 Date: 2024-11-08
 Usage: Use the tests encapsulated within this class to test the MortgagePayment class.
 """
-
+import unittest
 from unittest import TestCase
 from mortgage.mortgage import Mortgage
 from mortgage.pixell_lookup import MortgageRate, PaymentFrequency
@@ -294,3 +294,65 @@ class MortgageTests(TestCase):
         self.assertAlmostEqual(result, 7578.30, places=2)
 
 
+
+
+
+
+
+
+    def test_mortgage_str_monthly(self):
+        """Test for monthly payment frequency"""
+        mortgage = Mortgage(682912.43, "FIXED_5", "MONTHLY", 30)
+        expected_str = (
+            "Mortgage Amount: $682,912.43\n"
+            "Rate: 5.19%\n"  
+            "Amortization: 30\n"
+            "Frequency: Monthly -- Calculated Payment: $3,745.73"  
+        )
+        self.assertEqual(str(mortgage), expected_str)
+    
+    def test_mortgage_str_biweekly(self):
+        """Test for biweekly payment frequency"""
+        mortgage = Mortgage(682912.43, "FIXED_5", "BI_WEEKLY", 30)
+        expected_str = (
+            "Mortgage Amount: $682,912.43\n"
+            "Rate: 5.19%\n"
+            "Amortization: 30\n"
+            "Frequency: Bi_Weekly -- Calculated Payment: $1,727.96"  
+        )
+        self.assertEqual(str(mortgage), expected_str)
+
+    def test_mortgage_str_weekly(self):
+        """Test for weekly payment frequency"""
+        mortgage = Mortgage(682912.43, "FIXED_5", "WEEKLY", 30)
+        expected_str = (
+            "Mortgage Amount: $682,912.43\n"
+            "Rate: 5.19%\n"
+            "Amortization: 30\n"
+            "Frequency: Weekly -- Calculated Payment: $863.80" 
+        )
+        self.assertEqual(str(mortgage), expected_str)
+
+
+
+
+
+#     def test_repr(self):
+#         # Arrange
+#         loan_amount = 250000.0
+#         rate = "FIXED_5"
+#         amortization = 25
+#         frequency = "MONTHLY"
+#         mortgage = Mortgage(loan_amount, rate, frequency, amortization)
+
+#         # Act
+#         result = repr(mortgage)
+
+#         # Assert
+#         expected_repr = (
+#             "Mortgage(loan_amount=250000.00, rate=0.0519, amortization=25, frequency='12')"
+#         )
+#         self.assertEqual(result, expected_repr)
+
+# # if __name__ == "__main__":
+# #     unittest.main()
