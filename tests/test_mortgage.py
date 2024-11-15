@@ -2,7 +2,8 @@
 Description: A class used to test the Mortgage class.
 Author: Yunfei Wu
 Date: 2024-11-08
-Usage: Use the tests encapsulated within this class to test the MortgagePayment class.
+Usage: Use the tests encapsulated within this class to test the 
+       MortgagePayment class.
 """
 import unittest
 from unittest import TestCase
@@ -76,8 +77,9 @@ class MortgageTests(TestCase):
 
         # Act  
         with self.assertRaises(ValueError) as context:
-            mortgage = Mortgage(100000, 'FIXED_5', 'MONTHLY', invalid_amortization)
-
+            mortgage = Mortgage(
+                100000, 'FIXED_5', 'MONTHLY', invalid_amortization
+            )
         # Assert
         expected = "Amortization provided is invalid."
         actual = str(context.exception)
@@ -100,15 +102,11 @@ class MortgageTests(TestCase):
         # Assert
         self.assertEqual(mortgage._Mortgage__loan_amount, loan_amount)
         self.assertEqual(mortgage._Mortgage__rate, MortgageRate['FIXED_5'])
-        self.assertEqual(mortgage._Mortgage__frequency, PaymentFrequency['MONTHLY'])
+        self.assertEqual(
+            mortgage._Mortgage__frequency, 
+            PaymentFrequency['MONTHLY']
+        )        
         self.assertEqual(mortgage._Mortgage__amortization, amortization)
-
-
-
-
-
-
-
 
     def test_set_negative_loan_amount(self):
         """
@@ -158,13 +156,6 @@ class MortgageTests(TestCase):
         # Assert
         self.assertEqual(mortgage.loan_amount, 150000)
 
-
-
-
-
-
-
-
     def test_modify_rate_to_valid(self):
         """
         Test the mutator for rate: Modify the rate to a valid value and 
@@ -195,12 +186,6 @@ class MortgageTests(TestCase):
         expected = "Rate provided is invalid."
         actual = str(context.exception)
         self.assertEqual(expected, actual)
-
-    
-
-
-
-
 
     def test_modify_frequency_to_valid(self):
         """
@@ -233,14 +218,6 @@ class MortgageTests(TestCase):
         actual = str(context.exception)
         self.assertEqual(expected, actual)
 
-
-
-
-
-
-
-
-
     def test_modify_amortization_to_valid(self):
         """
         Test the mutator for amortization: Modify the amortization 
@@ -272,14 +249,6 @@ class MortgageTests(TestCase):
         actual = str(context.exception)
         self.assertEqual(expected, actual)
 
-
-
-
-
-    
-
-    
-
     def test_calculate_payment(self):
         """
         Test cases for the calculate_payment method.
@@ -292,13 +261,6 @@ class MortgageTests(TestCase):
 
         # Assert
         self.assertAlmostEqual(result, 7578.30, places=2)
-
-
-
-
-
-
-
 
     def test_mortgage_str_monthly(self):
         """Test for monthly payment frequency"""
@@ -333,10 +295,6 @@ class MortgageTests(TestCase):
         )
         self.assertEqual(str(mortgage), expected_str)
 
-
-
-
-
     def test_repr(self):
         # Arrange
         loan_amount = 250000.0
@@ -350,9 +308,10 @@ class MortgageTests(TestCase):
 
         # Assert
         expected_repr = (
-            "Mortgage(loan_amount=250000.00, rate=0.0519, amortization=25, frequency='12')"
-        )
+    "Mortgage(loan_amount=250000.00, rate=0.0519, "
+    "amortization=25, frequency='12')"
+)
         self.assertEqual(result, expected_repr)
 
-# # if __name__ == "__main__":
-# #     unittest.main()
+if __name__ == "__main__":
+    unittest.main()

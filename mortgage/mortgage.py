@@ -6,7 +6,11 @@ Usage: Create an instance of the Mortgage class to manage mortgage
 records and calculate payments.
 """
 
-from mortgage.pixell_lookup import MortgageRate, PaymentFrequency, VALID_AMORTIZATION
+from mortgage.pixell_lookup import (
+    MortgageRate, 
+    PaymentFrequency, 
+    VALID_AMORTIZATION
+)
 
 class Mortgage:
     """
@@ -49,11 +53,6 @@ class Mortgage:
             raise ValueError("Amortization provided is invalid.")
         self.__amortization = amortization
     
-
-
-
-
-    # Accessor and Mutator for Loan Amount
     @property
     def loan_amount(self):
         """Returns the loan amount."""
@@ -74,16 +73,6 @@ class Mortgage:
             raise ValueError("Loan Amount must be positive.")
         self.__loan_amount = value
 
-
-
-
-
-
-
-
-
-
-
     @property
     def rate(self):
         """
@@ -103,18 +92,11 @@ class Mortgage:
             ValueError: If the provided rate is invalid.
         """
         try:
-            self.__rate = MortgageRate[value]  # Ensure value is stored as MortgageRate enum
+            # Ensure value is stored as MortgageRate enum
+            self.__rate = MortgageRate[value]  
         except KeyError:
             raise ValueError("Rate provided is invalid.")
         
-
-
-
-
-
-
-
-
     @property
     def frequency(self):
         """
@@ -134,18 +116,10 @@ class Mortgage:
             ValueError: If the provided frequency is invalid.
         """
         try:
-            self.__frequency = PaymentFrequency[value]  # Convert string to PaymentFrequency enum
+            self.__frequency = PaymentFrequency[value]  
         except KeyError:
             raise ValueError("Frequency provided is invalid.")
         
-
-
-
-
-
-
-
-    # Accessor and Mutator for Amortization
     @property
     def amortization(self):
         """
@@ -168,14 +142,6 @@ class Mortgage:
             raise ValueError("Amortization provided is invalid.")
         self.__amortization = value
 
-
-
-
-
-
-
-
-
     def calculate_payment(self) -> float:
         """
         Calculates the mortgage payment based on the loan amount, 
@@ -189,11 +155,6 @@ class Mortgage:
         payment = P * (i * (1 + i) ** n) / ((1 + i) ** n - 1)
         return round(payment, 2)
     
- 
-
-
-
-
     def __str__(self):
         """
         Return a string representation of the mortgage instance.
@@ -205,13 +166,6 @@ class Mortgage:
                 f"Frequency: {self.__frequency.name.title()} -- "
                 f"Calculated Payment: ${payment:,.2f}")
     
-    
-
-
-
-
-
-
     def __repr__(self):
         return (
             f"Mortgage(loan_amount={self.__loan_amount:.2f}, "
@@ -219,5 +173,3 @@ class Mortgage:
             f"amortization={self.__amortization}, "
             f"frequency='{self.__frequency.value}')"
         )
-
-

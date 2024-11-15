@@ -9,7 +9,6 @@ with mortgages to ensure only valid rates, frequencies and amortization
 periods are used.
 """
 
-
 from enum import Enum
 
 class MortgageRate(Enum):
@@ -41,4 +40,3 @@ class PaymentFrequency(Enum):
     WEEKLY = 52
     
 VALID_AMORTIZATION = {5, 10, 15, 20, 25, 30}
-
