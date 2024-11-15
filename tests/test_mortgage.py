@@ -337,22 +337,22 @@ class MortgageTests(TestCase):
 
 
 
-#     def test_repr(self):
-#         # Arrange
-#         loan_amount = 250000.0
-#         rate = "FIXED_5"
-#         amortization = 25
-#         frequency = "MONTHLY"
-#         mortgage = Mortgage(loan_amount, rate, frequency, amortization)
+    def test_repr(self):
+        # Arrange
+        loan_amount = 250000.0
+        rate = "FIXED_5"
+        amortization = 25
+        frequency = "MONTHLY"
+        mortgage = Mortgage(loan_amount, rate, frequency, amortization)
 
-#         # Act
-#         result = repr(mortgage)
+        # Act
+        result = repr(mortgage)
 
-#         # Assert
-#         expected_repr = (
-#             "Mortgage(loan_amount=250000.00, rate=0.0519, amortization=25, frequency='12')"
-#         )
-#         self.assertEqual(result, expected_repr)
+        # Assert
+        expected_repr = (
+            "Mortgage(loan_amount=250000.00, rate=0.0519, amortization=25, frequency='12')"
+        )
+        self.assertEqual(result, expected_repr)
 
 # # if __name__ == "__main__":
 # #     unittest.main()

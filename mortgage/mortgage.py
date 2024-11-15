@@ -212,12 +212,12 @@ class Mortgage:
 
 
 
-    # def __repr__(self):
-    #     return (
-    #         f"Mortgage(loan_amount={self.__loan_amount:.2f}, "
-    #         f"rate={self.__rate.value}, "
-    #         f"amortization={self.__amortization}, "
-    #         f"frequency='{self.__frequency.value}')"
-    #     )
+    def __repr__(self):
+        return (
+            f"Mortgage(loan_amount={self.__loan_amount:.2f}, "
+            f"rate={self.__rate.value}, "
+            f"amortization={self.__amortization}, "
+            f"frequency='{self.__frequency.value}')"
+        )
 
 
